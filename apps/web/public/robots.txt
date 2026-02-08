@@ -1,0 +1,14 @@
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://uwrap.vercel.app/sitemap.xml
+
+# Crawl-delay for all bots
+Crawl-delay: 1
+
+# Disallow specific paths
+Disallow: /api/
+Disallow: /login
+Disallow: /_next/

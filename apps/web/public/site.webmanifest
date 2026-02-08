@@ -1,0 +1,36 @@
+{
+  "name": "uWrap - Video Pre-Production Platform",
+  "short_name": "uWrap",
+  "description": "Streamline your video pre-production workflow with uWrap",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color":="#0a0a0a",
+  "theme_color":"#9333ea",
+  "orientation":"portrait-primary",
+  "scope":"/",
+  "lang":"it",
+  "icons":[
+    {
+      "src":"/icon-192.png",
+      "sizes":"192x192",
+      "type":"image/png"
+    },
+    {
+      "src":"/icon-512.png",
+      "sizes":"512x512",
+      "type":"image/png"
+    },
+    {
+      "src":"/icon-maskable-192.png",
+      "sizes":"192x192",
+      "type":"image/png",
+      "purpose":"maskable"
+    },
+    {
+      "src":"/icon-maskable-512.png",
+      "sizes":"512x512",
+      "type":"image/png",
+      "purpose":"maskable"
+    }
+  ]
+}

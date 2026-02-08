@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: uwrap-api
+    runtime: node
+    buildCommand: cd apps/api && npm install && npm run build
+    startCommand: cd apps/api && npm run start:prod
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3001
+      - key: DATABASE_URL
+        sync: false  # Set this manually in Render dashboard
+      - key: FRONTEND_URL
+        value: https://uwrap.vercel.app
+    healthCheckPath: /api/health

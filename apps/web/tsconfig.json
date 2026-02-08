@@ -1,0 +1,40 @@
+{
+  "extends": "@uwrap/typescript-config/nextjs.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ],
+      "@uwrap/ui": [
+        "../../packages/ui/src"
+      ],
+      "@uwrap/shared": [
+        "../../packages/shared/src"
+      ],
+      "@uwrap/database": [
+        "../../packages/database/src"
+      ]
+    },
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "incremental": true
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

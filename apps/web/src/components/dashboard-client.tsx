@@ -361,86 +361,49 @@ function UpcomingSchedule() {
 // DASHBOARD CLIENT — CINEMATIC EXCELLENCE
 // ==========================================
 
+import { Project } from '@/lib/api';
+
 interface DashboardClientProps {
   user: {
     name?: string | null;
     email?: string | null;
     image?: string | null;
   };
+  projects: Project[];
+  error: string | null;
 }
 
-export function DashboardClient({ user }: DashboardClientProps) {
-  // Mock data
+export function DashboardClient({ user, projects, error }: DashboardClientProps) {
+  // Stats from real projects
   const stats = {
-    totalProjects: 12,
-    activeProjects: 5,
-    completedProjects: 7,
-    totalScripts: 24,
-    totalAssets: 156,
-    teamMembers: 8,
+    totalProjects: projects.length,
+    activeProjects: projects.filter(p => ['IDEA', 'PRE_PRODUCTION', 'PRODUCTION'].includes(p.status)).length,
+    completedProjects: projects.filter(p => p.status === 'COMPLETED').length,
+    totalScripts: 0, // TODO: Count from API
+    totalAssets: 0,  // TODO: Count from API
   };
 
-  const projects = [
+  // Use real projects from API
+  const displayProjects = projects.length > 0 ? projects.slice(0, 6).map(p => ({
+    ...p,
+    description: p.description || '', // Fix: ensure description is never undefined
+    organizationName: 'My Organization', // TODO: Add to API
+    _count: { scripts: 0, shootingDays: 0, assets: 0 }, // TODO: Add to API
+    progress: p.status === 'COMPLETED' ? 100 : p.status === 'POST_PRODUCTION' ? 75 : p.status === 'PRODUCTION' ? 50 : p.status === 'PRE_PRODUCTION' ? 25 : 10,
+  })) : [
+    // Fallback empty state
     {
-      id: '1',
-      name: 'Spot CRVDO Group',
-      description: 'Video promozionale ristorante con focus su atmosfera elegante e cucina gourmet',
-      status: 'PRE_PRODUCTION' as const,
-      updatedAt: new Date().toISOString(),
-      organizationName: 'CRVDO Group',
-      _count: { scripts: 3, shootingDays: 2, assets: 12 },
-      progress: 65,
-    },
-    {
-      id: '2',
-      name: 'Documentario uWrap',
-      description: 'Behind the scenes della piattaforma e interviste al team',
-      status: 'PRODUCTION' as const,
-      updatedAt: new Date(Date.now() - 86400000).toISOString(),
-      organizationName: 'uWrap Studio',
-      _count: { scripts: 2, shootingDays: 5, assets: 28 },
-      progress: 42,
-    },
-    {
-      id: '3',
-      name: 'Tutorial CFO Avanzato',
-      description: 'Serie di video formazione sulla gestione contabile per ristoranti',
-      status: 'POST_PRODUCTION' as const,
-      updatedAt: new Date(Date.now() - 172800000).toISOString(),
-      organizationName: 'CFO Italia',
-      _count: { scripts: 5, shootingDays: 3, assets: 45 },
-      progress: 88,
-    },
-    {
-      id: '4',
-      name: 'Evento Launch Party',
-      description: 'Copertura video evento lancio nuovo prodotto tech',
+      id: 'empty',
+      name: 'Nessun progetto ancora',
+      description: 'Crea il tuo primo progetto per iniziare',
       status: 'IDEA' as const,
-      updatedAt: new Date(Date.now() - 259200000).toISOString(),
-      organizationName: 'TechStart',
-      _count: { scripts: 0, shootingDays: 0, assets: 3 },
-      progress: 10,
-    },
-    {
-      id: '5',
-      name: 'Interviste Founders',
-      description: 'Serie di interviste con founders di startup italiane',
-      status: 'PRE_PRODUCTION' as const,
-      updatedAt: new Date(Date.now() - 345600000).toISOString(),
-      organizationName: 'Startup Italia',
-      _count: { scripts: 8, shootingDays: 4, assets: 18 },
-      progress: 35,
-    },
-    {
-      id: '6',
-      name: 'Video Corso Editing',
-      description: 'Masterclass completa su tecniche avanzate di video editing',
-      status: 'COMPLETED' as const,
-      updatedAt: new Date(Date.now() - 432000000).toISOString(),
-      organizationName: 'VideoAcademy',
-      _count: { scripts: 12, shootingDays: 8, assets: 67 },
-      progress: 100,
-    },
+      type: 'OTHER' as const,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      organizationName: '-',
+      _count: { scripts: 0, shootingDays: 0, assets: 0 },
+      progress: 0,
+    }
   ];
 
   const activities = [
@@ -509,7 +472,7 @@ export function DashboardClient({ user }: DashboardClientProps) {
               </div>
             </motion.div>
             
-            <ProjectGrid projects={projects} />
+            <ProjectGrid projects={displayProjects} />
           </div>
           
           {/* Sidebar */}

@@ -1,7 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 import { motion } from 'framer-motion';
 import { DashboardShell } from '@/components/dashboard-shell';
 import { projectsApi } from '@/lib/api';
@@ -10,6 +11,7 @@ import Link from 'next/link';
 
 export default function NewProjectPage() {
   const router = useRouter();
+  const { data: session, status } = useSession();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [formData, setFormData] = useState({
@@ -18,6 +20,24 @@ export default function NewProjectPage() {
     type: 'FILM' as const,
     status: 'IDEA' as const,
   });
+
+  useEffect(() => {
+    if (status === 'unauthenticated') {
+      router.push('/login');
+    }
+  }, [status, router]);
+
+  if (status === 'loading') {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-black">
+        <Loader2 className="w-8 h-8 animate-spin text-purple-500" />
+      </div>
+    );
+  }
+
+  if (!session) {
+    return null;
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -39,7 +59,7 @@ export default function NewProjectPage() {
   };
 
   return (
-    <DashboardShell>
+    <DashboardShell user={session.user}>
       <div className="max-w-2xl mx-auto">
         {/* Header */}
         <motion.div

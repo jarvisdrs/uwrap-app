@@ -9,4 +9,9 @@ export class AppController {
   getHealth(): { status: string; timestamp: string } {
     return this.appService.getHealth();
   }
+
+  @Get()
+  getRoot(): { status: string; message: string } {
+    return { status: 'ok', message: 'uWrap API is running' };
+  }
 }

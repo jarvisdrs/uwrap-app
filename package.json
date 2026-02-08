@@ -10,7 +10,8 @@
     "db:push": "turbo run db:push",
     "db:migrate": "turbo run db:migrate",
     "db:studio": "turbo run db:studio",
-    "type-check": "turbo run type-check"
+    "type-check": "turbo run type-check",
+    "postinstall": "npm run db:generate"
   },
   "devDependencies": {
     "@turbo/gen": "^1.12.0",
